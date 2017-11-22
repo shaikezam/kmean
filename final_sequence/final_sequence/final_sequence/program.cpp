@@ -15,25 +15,24 @@ int main(int argc,char *argv[])
 	//read points from file
 	Point* points = readDataFromFile(&NUM_OF_DIMENSIONS, &NUM_OF_PRODUCTS, &MAX_NUM_OF_CLUSTERS, &MAX_NUM_OF_ITERATION, &QM, clusters, NUM_OF_CLUSTERS);	
 
-	//add points to clusters
-	addPointsToClusters(points, clusters, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, NUM_OF_DIMENSIONS);
 	//calculate cluster center	
 	for(int i = 0 ; i < MAX_NUM_OF_ITERATION ; i++)
 	{
+		printf("Iteration number %d\n", i);
+		addPointsToClusters(points, clusters, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, NUM_OF_DIMENSIONS);
 		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
 		{
 			calculateClusterCenters(&clusters[j], NUM_OF_DIMENSIONS);
 		}
 		bool flag = isNeedToCalculateClusterCenter(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
-		
+
 		if(flag == false)
 		{
 			break;
 		}
 		removePointFromCluster(clusters, NUM_OF_CLUSTERS);
-		addPointsToClusters(points, clusters, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, NUM_OF_DIMENSIONS);
 	}
-	
+
 }
 
 Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_NUM_OF_CLUSTERS, int* MAX_NUM_OF_ITERATION, float* QM, Cluster* clusters, const int NUM_OF_CLUSTERS)
@@ -78,7 +77,7 @@ void addPointsToClusters(Point* points, Cluster* clusters, const int NUM_OF_PROD
 		double smallestValue = 1000000;
 		for (int j = 0; j < NUM_OF_CLUSTERS ; j++)
 		{
-			double tempRangValue = getDistance(points[i], clusters[j], NUM_OF_DIMENSIONS);
+			double tempRangValue = getDistanceBetweenTwoPoints(points[i], clusters[j].center, NUM_OF_DIMENSIONS);
 			if(smallestValue >= tempRangValue)
 			{
 				smallestValue = tempRangValue;
@@ -89,6 +88,7 @@ void addPointsToClusters(Point* points, Cluster* clusters, const int NUM_OF_PROD
 	}
 	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
+		printf("Num of points %d\n", clusters[i].numOfPoints);
 		clusters[i].points = (Point *) calloc(clusters[i].numOfPoints, sizeof(Point));
 		clusters[i].numOfPoints = 0;
 	}
@@ -98,16 +98,12 @@ void addPointsToClusters(Point* points, Cluster* clusters, const int NUM_OF_PROD
 		double smallestValue = 10000;
 		for (int j = 0; j < NUM_OF_CLUSTERS ; j++)
 		{
-			if (i != j)
+			double tempRangValue = getDistance(points[i], clusters[j], NUM_OF_DIMENSIONS);
+			if(smallestValue >= tempRangValue)
 			{
-				double tempRangValue = getDistance(points[i], clusters[j], NUM_OF_DIMENSIONS);
-				if(smallestValue >= tempRangValue)
-				{
-					smallestValue = tempRangValue;
-					clusterIndex = j;
-				}
-			}
-			
+				smallestValue = tempRangValue;
+				clusterIndex = j;
+			}	
 		}
 		int index = clusters[clusterIndex].numOfPoints++;
 		clusters[clusterIndex].points[index] = points[i];
@@ -119,8 +115,7 @@ double getDistance(Point point, Cluster cluster, const int NUM_OF_DIMENSIONS)
 	double sum = 0;
 	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
-
-		sum += pow((double) fabs((point.coordinates[i] - cluster.center.coordinates[i])),2);
+		sum += (point.coordinates[i] - cluster.center.coordinates[i]) * (point.coordinates[i] - cluster.center.coordinates[i]);
 
 	}
 	return sqrt(sum);
@@ -131,7 +126,7 @@ double getDistanceBetweenTwoPoints(Point point1, Point point2, const int NUM_OF_
 	double sum = 0;
 	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
-		sum += pow((double) (point1.coordinates[i] - point2.coordinates[i]),2);
+		sum += (point1.coordinates[i] - point2.coordinates[i])*(point1.coordinates[i] - point2.coordinates[i]);
 
 	}
 	return sqrt(sum);
@@ -146,12 +141,11 @@ void removePointFromCluster(Cluster* clusters, const int NUM_OF_CLUSTERS)
 		clusters[i].radius = 0;
 		clusters[i].numOfPoints = 0;
 	}
-	
+
 }
 
 bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 {
-	printf("Num of points: %d\n", cluster->numOfPoints);
 	bool returnValue = true;
 	Point tempCenter;
 	tempCenter.coordinates = (float*)calloc(NUM_OF_DIMENSIONS, sizeof(float));
@@ -164,7 +158,7 @@ bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 	}
 	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
-		tempCenter.coordinates[i] = tempCenter.coordinates[i] / NUM_OF_DIMENSIONS;
+		tempCenter.coordinates[i] = tempCenter.coordinates[i] / cluster->numOfPoints;
 	}
 	cluster->center = tempCenter;
 	return returnValue;
@@ -188,6 +182,7 @@ void calculateClusterRadius(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 			}
 		}
 	}
+	printf("%f\n", tempRadius);
 	cluster->radius = tempRadius;
 }
 
@@ -202,26 +197,25 @@ void printPoint(Point* point, const int NUM_OF_DIMENSIONS)
 
 bool isNeedToCalculateClusterCenter(Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS)
 {
-	for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
-	{
-		calculateClusterRadius(&clusters[j], NUM_OF_DIMENSIONS);
-	}
+	int clusterIndex = 0;
 	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
-		for(int j = 0 ; j<NUM_OF_CLUSTERS ; j++)
+		for(int j = 0 ; j< clusters[i].numOfPoints ; j++)
 		{
-			if (i != j)
+			for(int p = 0 ; p < NUM_OF_CLUSTERS ; p++)
 			{
-				for(int p = 0 ; p < clusters[j].numOfPoints ; p++)
-				{			
-					float tempDistance = getDistance(clusters[i].points[p], clusters[j], NUM_OF_DIMENSIONS);
-					if (tempDistance < clusters[i].radius)
+				if(p!=i)
+				{
+					float distanceToOtherClusterCenter = getDistanceBetweenTwoPoints(clusters[i].points[j], clusters[p].center, NUM_OF_DIMENSIONS);
+					float distanceToPointClusterCenter = getDistanceBetweenTwoPoints(clusters[i].points[j], clusters[i].center, NUM_OF_DIMENSIONS);
+					if (distanceToOtherClusterCenter < distanceToPointClusterCenter)
 					{
-						printf("Old = %f, New = %f\n", clusters[i].radius, tempDistance);
+						printf("Other = %f, Now = %f\n", distanceToOtherClusterCenter, distanceToPointClusterCenter);
 						return true;
 					}
-				
 				}
+
+
 			}
 		}
 	}
