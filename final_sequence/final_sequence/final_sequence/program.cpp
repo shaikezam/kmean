@@ -27,12 +27,12 @@ int main(int argc,char *argv[])
 			break;
 		}
 		NUM_OF_CLUSTERS++;
-		int* clusters22 = (int*)malloc(1);
-		clusters = appendPointsAsClusters(clusters, points, &NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
+		free(clusters);
+		free(points);
+		clusters = (Cluster*)calloc(NUM_OF_CLUSTERS, sizeof(Cluster));
+		points = readDataFromFile(&NUM_OF_DIMENSIONS, &NUM_OF_PRODUCTS, &MAX_NUM_OF_CLUSTERS, &MAX_NUM_OF_ITERATION, &QM, clusters, NUM_OF_CLUSTERS);	
+		//clusters = appendPointsAsClusters(clusters, points, &NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
 	}
-	printf("Break\n");
-	/*checkIsCurrentClustersEnough(points, clusters, NUM_OF_DIMENSIONS, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, MAX_NUM_OF_ITERATION);
-	float tempQM = calculateQM(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);*/
 }
 
 Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_NUM_OF_CLUSTERS, int* MAX_NUM_OF_ITERATION, float* QM, Cluster* clusters, const int NUM_OF_CLUSTERS)
@@ -88,7 +88,7 @@ void addPointsToClusters(Point* points, Cluster* clusters, const int NUM_OF_PROD
 	}
 	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
-		printf("Num of points %d\n", clusters[i].numOfPoints);
+		//printf("Num of points %d\n", clusters[i].numOfPoints);
 		clusters[i].points = (Point *) calloc(clusters[i].numOfPoints, sizeof(Point));
 		clusters[i].numOfPoints = 0;
 	}
@@ -144,7 +144,6 @@ double getDistanceBetweenTwoPoints(Point point1, Point point2, const int NUM_OF_
 	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
 		sum += (point1.coordinates[i] - point2.coordinates[i])*(point1.coordinates[i] - point2.coordinates[i]);
-
 	}
 	return sqrt(sum);
 }
@@ -176,7 +175,6 @@ bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 		tempCenter.coordinates[i] = tempCenter.coordinates[i] / cluster->numOfPoints;
 	}
 	cluster->center = tempCenter;
-	//free(tempCenter.coordinates);
 	return returnValue;
 }
 
@@ -233,31 +231,22 @@ void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NU
 	}
 }
 
-float calculateQM(Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS)
+float calculateQM(Cluster* clusters, int NUM_OF_DIMENSIONS, int NUM_OF_CLUSTERS)
 {
-	float* arrClustersDiameters = (float*)calloc(NUM_OF_CLUSTERS, sizeof(float));
-	float* arrClustersDistanceToOtherClustersCenter = (float*)calloc(NUM_OF_CLUSTERS - 1, sizeof(float));
-	float tempQM = 0;
-	int p = 0;
+	double tempQM = 0;
 	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
-		arrClustersDiameters[i] = calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS)*2;
-		//printf("%f\n", arrClustersDiameters[i]);
-	}
-
-	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
-	{
+		double d = calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS)*2;
 		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
 		{
 			if (i != j)
 			{
-				arrClustersDistanceToOtherClustersCenter[p] = getDistanceBetweenTwoPoints(clusters[i].center, clusters[j].center, NUM_OF_DIMENSIONS);
-				tempQM += arrClustersDiameters[i] / arrClustersDistanceToOtherClustersCenter[p];
-				p++;
+				double dd = getDistanceBetweenTwoPoints(clusters[i].center, clusters[j].center, NUM_OF_DIMENSIONS);
+				tempQM += dd / d;
 			}
 		}
 	}
-	return tempQM / p;
+	return tempQM / (NUM_OF_CLUSTERS*(NUM_OF_CLUSTERS-1));
 }
 
 bool isNeedToCalculateClusterCenter(Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS)
