@@ -15,24 +15,11 @@ int main(int argc,char *argv[])
 	//read points from file
 	Point* points = readDataFromFile(&NUM_OF_DIMENSIONS, &NUM_OF_PRODUCTS, &MAX_NUM_OF_CLUSTERS, &MAX_NUM_OF_ITERATION, &QM, clusters, NUM_OF_CLUSTERS);	
 
-	//calculate cluster center	
-	for(int i = 0 ; i < MAX_NUM_OF_ITERATION ; i++)
+	for(int i = 0 ; i < 1 ; i++)
 	{
-		printf("Iteration number %d\n", i);
-		addPointsToClusters(points, clusters, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, NUM_OF_DIMENSIONS);
-		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
-		{
-			calculateClusterCenters(&clusters[j], NUM_OF_DIMENSIONS);
-		}
-		bool flag = isNeedToCalculateClusterCenter(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
-
-		if(flag == false)
-		{
-			break;
-		}
-		removePointFromCluster(clusters, NUM_OF_CLUSTERS);
+		//calculate cluster centers
+		checkIsCurrentClustersEnough(points, clusters, NUM_OF_DIMENSIONS, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, MAX_NUM_OF_ITERATION);
 	}
-
 }
 
 Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_NUM_OF_CLUSTERS, int* MAX_NUM_OF_ITERATION, float* QM, Cluster* clusters, const int NUM_OF_CLUSTERS)
@@ -195,6 +182,26 @@ void printPoint(Point* point, const int NUM_OF_DIMENSIONS)
 	printf("\n");
 }
 
+void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_PRODUCTS, const int NUM_OF_CLUSTERS, const int MAX_NUM_OF_ITERATION)
+{
+	for(int i = 0 ; i < MAX_NUM_OF_ITERATION ; i++)
+	{
+		printf("Amount of clusters: %d, Iteration number: %d\n", NUM_OF_CLUSTERS, i);
+		addPointsToClusters(points, clusters, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, NUM_OF_DIMENSIONS);
+		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
+		{
+			calculateClusterCenters(&clusters[j], NUM_OF_DIMENSIONS);
+		}
+		bool flag = isNeedToCalculateClusterCenter(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
+
+		if(flag == false)
+		{
+			return;
+		}
+		removePointFromCluster(clusters, NUM_OF_CLUSTERS);
+	}
+}
+
 bool isNeedToCalculateClusterCenter(Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS)
 {
 	int clusterIndex = 0;
@@ -210,12 +217,10 @@ bool isNeedToCalculateClusterCenter(Cluster* clusters, const int NUM_OF_DIMENSIO
 					float distanceToPointClusterCenter = getDistanceBetweenTwoPoints(clusters[i].points[j], clusters[i].center, NUM_OF_DIMENSIONS);
 					if (distanceToOtherClusterCenter < distanceToPointClusterCenter)
 					{
-						printf("Other = %f, Now = %f\n", distanceToOtherClusterCenter, distanceToPointClusterCenter);
+						//printf("Other = %f, Now = %f\n", distanceToOtherClusterCenter, distanceToPointClusterCenter);
 						return true;
 					}
 				}
-
-
 			}
 		}
 	}

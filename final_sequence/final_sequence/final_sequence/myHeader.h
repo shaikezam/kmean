@@ -21,5 +21,6 @@ void removePointFromCluster(Cluster* clusters, const int NUM_OF_CLUSTERS);
 bool isNeedToCalculateClusterCenter(Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS);
 double getDistanceBetweenTwoPoints(Point point1, Point point2, const int NUM_OF_DIMENSIONS);
 void printPoint(Point* point, const int NUM_OF_DIMENSIONS);
-//const char* pathToFile = "C:/Shay Zambrovski/kmean/Sales_Transactions_Dataset_Weekly.dat";
-const char* pathToFile = "E:/College/PComputing/Project/Sales_Transactions_Dataset_Weekly.dat";
+void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_PRODUCTS, const int NUM_OF_CLUSTERS, const int MAX_NUM_OF_ITERATION);
+const char* pathToFile = "C:/Shay Zambrovski/kmean/Sales_Transactions_Dataset_Weekly.dat";
+//const char* pathToFile = "E:/College/PComputing/Project/Sales_Transactions_Dataset_Weekly.dat";
