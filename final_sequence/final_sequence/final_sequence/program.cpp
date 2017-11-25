@@ -6,9 +6,12 @@
 #include <omp.h>
 #include <iostream>
 #include <conio.h>
+#include <time.h>
 
 int main(int argc,char *argv[])
 {
+	clock_t start, finish;  
+    start = clock();  
 	int NUM_OF_DIMENSIONS, NUM_OF_PRODUCTS, MAX_NUM_OF_CLUSTERS, MAX_NUM_OF_ITERATION;
 	float QM;
 	Cluster* clusters = (Cluster*)calloc(NUM_OF_CLUSTERS, sizeof(Cluster));
@@ -24,6 +27,9 @@ int main(int argc,char *argv[])
 		if(tempQM <= QM)
 		{
 			printf("The QM is: %f, GoodBye\n",tempQM);
+			finish = clock();
+
+			printf("Program took %f\n", ((float)(finish - start) / 1000000.0F ) * 1000);
 			break;
 		}
 		NUM_OF_CLUSTERS++;
