@@ -1,4 +1,4 @@
-﻿Build started 11/22/2017 11:14:56 PM.
+﻿Build started 11/25/2017 12:15:44 PM.
      1>Project "E:\College\PComputing\Project\final_sequence\final_sequence\final_sequence\final_sequence.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\final_sequence.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -13,9 +13,8 @@
                  c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(253) : see declaration of 'fscanf'
      1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(56): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(177): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(209): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(210): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(264): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(265): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
        Link:
          C:\Software\Visual Studtio C CPP comunity\vc\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\final_sequence.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.lib" /MACHINE:X86 Debug\program.obj
          LINK : E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe not found or not built by the last incremental link; performing full link
@@ -29,4 +28,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.66
+Time Elapsed 00:00:01.71
