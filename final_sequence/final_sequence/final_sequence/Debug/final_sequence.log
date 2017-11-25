@@ -1,33 +1,31 @@
-﻿Build started 11/23/2017 6:26:24 PM.
-     1>Project "C:\Shay Zambrovski\kmean\final_sequence\final_sequence\final_sequence\final_sequence.vcxproj" on node 2 (build target(s)).
+﻿Build started 11/25/2017 12:15:44 PM.
+     1>Project "E:\College\PComputing\Project\final_sequence\final_sequence\final_sequence\final_sequence.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\final_sequence.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt program.cpp
+         C:\Software\Visual Studtio C CPP comunity\vc\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt program.cpp
          program.cpp
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(40): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(41): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(52): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(56): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(191): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(249): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(263): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\shay zambrovski\kmean\final_sequence\final_sequence\final_sequence\program.cpp(264): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(40): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(234) : see declaration of 'fopen'
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(41): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(253) : see declaration of 'fscanf'
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(52): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(253) : see declaration of 'fscanf'
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(56): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\software\visual studtio c cpp comunity\vc\vc\include\stdio.h(253) : see declaration of 'fscanf'
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(264): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\college\pcomputing\project\final_sequence\final_sequence\final_sequence\program.cpp(265): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\final_sequence.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.lib" /MACHINE:X86 Debug\program.obj
-         LINK : C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.exe not found or not built by the last incremental link; performing full link
-         final_sequence.vcxproj -> C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.exe
+         C:\Software\Visual Studtio C CPP comunity\vc\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\final_sequence.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.lib" /MACHINE:X86 Debug\program.obj
+         LINK : E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe not found or not built by the last incremental link; performing full link
+         final_sequence.vcxproj -> E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Shay Zambrovski\kmean\final_sequence\final_sequence\Debug\final_sequence.exe;#1" /manifest Debug\final_sequence.exe.intermediate.manifest
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\College\PComputing\Project\final_sequence\final_sequence\Debug\final_sequence.exe;#1" /manifest Debug\final_sequence.exe.intermediate.manifest
        FinalizeBuildStatus:
          Deleting file "Debug\final_sequence.unsuccessfulbuild".
          Touching "Debug\final_sequence.lastbuildstate".
-     1>Done Building Project "C:\Shay Zambrovski\kmean\final_sequence\final_sequence\final_sequence\final_sequence.vcxproj" (build target(s)).
+     1>Done Building Project "E:\College\PComputing\Project\final_sequence\final_sequence\final_sequence\final_sequence.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.04
+Time Elapsed 00:00:01.71

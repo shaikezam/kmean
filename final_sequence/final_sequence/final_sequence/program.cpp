@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
 	{
 		//calculate cluster centers
 		checkIsCurrentClustersEnough(points, clusters, NUM_OF_DIMENSIONS, NUM_OF_PRODUCTS, NUM_OF_CLUSTERS, MAX_NUM_OF_ITERATION);
-		float tempQM = calculateQM(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
+		double tempQM = calculateQM(clusters, NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
 		printf("With %d clusters the QM is: %f\n", NUM_OF_CLUSTERS, tempQM);
 		if(tempQM <= QM)
 		{
@@ -160,6 +160,7 @@ void removePointFromCluster(Cluster* clusters, const int NUM_OF_CLUSTERS)
 
 bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 {
+	printf("Num of points: %d\n", cluster->numOfPoints);
 	bool returnValue = true;
 	Point tempCenter;
 	tempCenter.coordinates = (float*)calloc(NUM_OF_DIMENSIONS, sizeof(float));
@@ -178,17 +179,17 @@ bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 	return returnValue;
 }
 
-float calculateClusterRadius(Cluster* cluster, const int NUM_OF_DIMENSIONS)
+double calculateClusterRadius(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 {
 	//printf("Num of points: %d\n", cluster->numOfPoints);
-	float tempRadius = 0;
+	double tempRadius = 0;
 	for(int i = 0 ; i < cluster->numOfPoints ; i++)
 	{
 		for(int j = 0 ; j < cluster->numOfPoints ; j++)
 		{
 			if(i != j)
 			{
-				float calculatedRadius = getDistanceBetweenTwoPoints(cluster->points[i], cluster->points[j], NUM_OF_DIMENSIONS);
+				double calculatedRadius = getDistanceBetweenTwoPoints(cluster->points[i], cluster->points[j], NUM_OF_DIMENSIONS);
 				if(calculatedRadius > tempRadius)
 				{
 					tempRadius = calculatedRadius;
@@ -231,18 +232,18 @@ void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NU
 	}
 }
 
-float calculateQM(Cluster* clusters, int NUM_OF_DIMENSIONS, int NUM_OF_CLUSTERS)
+double calculateQM(Cluster* clusters, int NUM_OF_DIMENSIONS, int NUM_OF_CLUSTERS)
 {
 	double tempQM = 0;
 	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
-		double d = calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS)*2;
+		double d = (calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS)*2);
 		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
 		{
 			if (i != j)
 			{
 				double dd = getDistanceBetweenTwoPoints(clusters[i].center, clusters[j].center, NUM_OF_DIMENSIONS);
-				tempQM += dd / d;
+				tempQM += d / dd;
 			}
 		}
 	}
