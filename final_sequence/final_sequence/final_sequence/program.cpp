@@ -29,8 +29,8 @@ int main(int argc,char *argv[])
 			printf("The QM is: %f, GoodBye\n",tempQM);
 			finish = clock();
 
-			printf("Program took %f\n", ((float)(finish - start) / 1000000.0F ) * 1000);
-			break;
+			printf("Program took %f\n", ((float)(finish - start) / CLOCKS_PER_SEC));
+			exit(1);
 		}
 		NUM_OF_CLUSTERS++;
 		free(clusters);
@@ -39,6 +39,8 @@ int main(int argc,char *argv[])
 		points = readDataFromFile(&NUM_OF_DIMENSIONS, &NUM_OF_PRODUCTS, &MAX_NUM_OF_CLUSTERS, &MAX_NUM_OF_ITERATION, &QM, clusters, NUM_OF_CLUSTERS);	
 		//clusters = appendPointsAsClusters(clusters, points, &NUM_OF_DIMENSIONS, NUM_OF_CLUSTERS);
 	}
+	finish = clock();
+	printf("Program took %f\n", ((float)(finish - start) / CLOCKS_PER_SEC));
 }
 
 Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_NUM_OF_CLUSTERS, int* MAX_NUM_OF_ITERATION, float* QM, Cluster* clusters, const int NUM_OF_CLUSTERS)
@@ -46,12 +48,13 @@ Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_N
 	FILE* file = fopen(pathToFile, "r");
 	int rc = fscanf(file, "%d,%d,%d,%d,%f\n", NUM_OF_PRODUCTS, NUM_OF_DIMENSIONS, MAX_NUM_OF_CLUSTERS, MAX_NUM_OF_ITERATION, QM);
 	Point* p = (Point*)calloc(*NUM_OF_PRODUCTS, sizeof(Point));
-
-	for(int i = 0 ; i < *NUM_OF_PRODUCTS ; i++)
+	int i, j;
+	
+	for(i = 0 ; i < *NUM_OF_PRODUCTS ; i++)
 	{
 		p[i].coordinates = (float*)calloc(*NUM_OF_DIMENSIONS, sizeof(float));
 		float temp = 0;
-		for(int j = 0 ; j < *NUM_OF_DIMENSIONS ; j++)
+		for(j = 0 ; j < *NUM_OF_DIMENSIONS ; j++)
 		{
 			if (j == *NUM_OF_DIMENSIONS-1) 
 			{
@@ -65,7 +68,10 @@ Point *readDataFromFile(int* NUM_OF_DIMENSIONS, int* NUM_OF_PRODUCTS, int* MAX_N
 		}
 
 	}
-	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
+	//omp_set_num_threads(NUM_OF_CLUSTERS);
+	//#pragma omp parallel private(i)
+	//#pragma omp parallel for
+	for(i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
 		//clusters[i].center.coordinates = (float*)calloc(*NUM_OF_DIMENSIONS, sizeof(float));
 		clusters[i].center = p[i];
@@ -147,9 +153,13 @@ double getDistance(Point point, Cluster cluster, const int NUM_OF_DIMENSIONS)
 double getDistanceBetweenTwoPoints(Point point1, Point point2, const int NUM_OF_DIMENSIONS)
 {
 	double sum = 0;
-	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
+	//omp_set_num_threads(NUM_OF_DIMENSIONS);
+	int i;
+	//#pragma omp parallel for  private (i) shared(point1, point2) reduction(+:sum) 
+	for(i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
 		sum += (point1.coordinates[i] - point2.coordinates[i])*(point1.coordinates[i] - point2.coordinates[i]);
+		//printf("%d **** %f, %f\n", i, sum, point1.coordinates[i]);
 	}
 	return sqrt(sum);
 }
@@ -166,17 +176,22 @@ void removePointFromCluster(Cluster* clusters, const int NUM_OF_CLUSTERS)
 
 bool calculateClusterCenters(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 {
-	printf("Num of points: %d\n", cluster->numOfPoints);
+	//printf("Num of points: %d\n", cluster->numOfPoints);
 	bool returnValue = true;
 	Point tempCenter;
 	tempCenter.coordinates = (float*)calloc(NUM_OF_DIMENSIONS, sizeof(float));
-	for(int i = 0 ; i < cluster->numOfPoints ; i++)
+	//omp_set_num_threads(2);
+	int i;
+	//#pragma omp parallel for private (i) shared(tempCenter)
+	for(i = 0 ; i < cluster->numOfPoints ; i++)
 	{
 		for (int j = 0 ; j < NUM_OF_DIMENSIONS ; j++)
 		{
 			tempCenter.coordinates[j] += cluster->points[i].coordinates[j];
 		}
 	}
+	//omp_set_num_threads(NUM_OF_DIMENSIONS);
+	//#pragma omp parallel for
 	for(int i = 0 ; i < NUM_OF_DIMENSIONS ; i++)
 	{
 		tempCenter.coordinates[i] = tempCenter.coordinates[i] / cluster->numOfPoints;
@@ -189,9 +204,12 @@ double calculateClusterRadius(Cluster* cluster, const int NUM_OF_DIMENSIONS)
 {
 	//printf("Num of points: %d\n", cluster->numOfPoints);
 	double tempRadius = 0;
-	for(int i = 0 ; i < cluster->numOfPoints ; i++)
+	int i, j;
+	//#pragma omp parallel for
+	for(i = 0 ; i < cluster->numOfPoints ; i++)
 	{
-		for(int j = 0 ; j < cluster->numOfPoints ; j++)
+		//#pragma omp parallel for
+		for(j = 0 ; j < cluster->numOfPoints ; j++)
 		{
 			if(i != j)
 			{
@@ -241,10 +259,13 @@ void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NU
 double calculateQM(Cluster* clusters, int NUM_OF_DIMENSIONS, int NUM_OF_CLUSTERS)
 {
 	double tempQM = 0;
-	for(int i = 0 ; i < NUM_OF_CLUSTERS ; i++)
+	int i, j;
+	//#pragma omp parallel for
+	for(i = 0 ; i < NUM_OF_CLUSTERS ; i++)
 	{
-		double d = (calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS)*2);
-		for(int j = 0 ; j < NUM_OF_CLUSTERS ; j++)
+		double d = (calculateClusterRadius(&clusters[i], NUM_OF_DIMENSIONS));
+		//#pragma omp parallel for
+		for(j = 0 ; j < NUM_OF_CLUSTERS ; j++)
 		{
 			if (i != j)
 			{

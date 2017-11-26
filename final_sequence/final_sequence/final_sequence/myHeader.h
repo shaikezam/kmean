@@ -24,5 +24,5 @@ void printPoint(Point* point, const int NUM_OF_DIMENSIONS);
 void checkIsCurrentClustersEnough(Point* points, Cluster* clusters, const int NUM_OF_DIMENSIONS, const int NUM_OF_PRODUCTS, const int NUM_OF_CLUSTERS, const int MAX_NUM_OF_ITERATION);
 double calculateQM(Cluster* clusters, int NUM_OF_DIMENSIONS, int NUM_OF_CLUSTERS);
 Cluster* appendPointsAsClusters(Cluster* clusters, Point* points, int* NUM_OF_DIMENSIONS, const int NUM_OF_CLUSTERS);
-//const char* pathToFile = "C:/Shay Zambrovski/kmean/Sales_Transactions_Dataset_Weekly.dat";
-const char* pathToFile = "E:/College/PComputing/Project/Sales_Transactions_Dataset_Weekly.dat";
+const char* pathToFile = "C:/Shay Zambrovski/kmean/Sales_Transactions_Dataset_Weekly.dat";
+//const char* pathToFile = "E:/College/PComputing/Project/Sales_Transactions_Dataset_Weekly.dat";
